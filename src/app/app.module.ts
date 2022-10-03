@@ -16,6 +16,7 @@ import { TopicCardComponent } from './topic-card/topic-card.component';
 import { MaterialComponent } from './material/material.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TopicFormComponent } from './topic-form/topic-form.component';
+import { MaterialFormComponent } from './material-form/material-form.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TopicFormComponent } from './topic-form/topic-form.component';
     TopicComponent,
     TopicCardComponent,
     MaterialComponent,
-    TopicFormComponent
+    TopicFormComponent,
+    MaterialFormComponent
   ],
   imports: [
     BrowserModule,

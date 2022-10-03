@@ -1,0 +1,7 @@
+.material-form {
+  margin: var(--space);
+}
+
+.material-form mat-form-field {
+  width: 100%;
+}
