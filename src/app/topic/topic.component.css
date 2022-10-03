@@ -1,0 +1,10 @@
+.topic {
+  margin: var(--space);
+}
+
+.materials {
+  display: flex;
+  margin: var(--space);
+  gap: var(--space);
+  overflow-x: scroll;
+}
