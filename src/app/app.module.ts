@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +26,7 @@ import { MaterialFormComponent } from './material-form/material-form.component';
     TopicCardComponent,
     MaterialComponent,
     TopicFormComponent,
-    MaterialFormComponent
+    MaterialFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,10 +37,11 @@ import { MaterialFormComponent } from './material-form/material-form.component';
     MatCardModule,
     MatIconModule,
     FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
