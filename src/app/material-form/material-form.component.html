@@ -1,23 +1,22 @@
 <mat-card class="material-form">
-  <mat-card-header>
-    <mat-card-title>Create a material for angular topic</mat-card-title>
-  </mat-card-header>
-  <mat-form-field appearance="fill">
-    <mat-label>Label</mat-label>
-    <input matInput />
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Link</mat-label>
-    <input matInput />
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Description</mat-label>
-    <input matInput />
-  </mat-form-field>
-  <button
-      mat-raised-button
-      color="primary"
-    >
+  <form [formGroup]="materialForm" (ngSubmit)="onSubmit()">
+    <mat-card-header>
+      <mat-card-title>Create a material for angular topic</mat-card-title>
+    </mat-card-header>
+    <mat-form-field appearance="fill">
+      <mat-label>Label</mat-label>
+      <input matInput formControlName="label" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Link</mat-label>
+      <input matInput formControlName="link" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" />
+    </mat-form-field>
+    <button [disabled]="!materialForm.valid" mat-raised-button color="primary">
       Save Material
     </button>
+  </form>
 </mat-card>
