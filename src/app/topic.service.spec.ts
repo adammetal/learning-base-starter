@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 
-import { TopicServiceService } from './topic-service.service';
+import { TopicService } from './topic.service';
 
 fdescribe('TopicServiceService', () => {
-  let service: TopicServiceService;
+  let service: TopicService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TopicServiceService);
+    service = TestBed.inject(TopicService);
     localStorage.clear();
   });
 

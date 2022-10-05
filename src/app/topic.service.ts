@@ -7,7 +7,7 @@ import { LocalStorageService } from './local-storage.service';
 @Injectable({
   providedIn: 'root',
 })
-export class TopicServiceService {
+export class TopicService {
   constructor(private localStorage: LocalStorageService) {}
 
   private readonly key: string = 'topics';
