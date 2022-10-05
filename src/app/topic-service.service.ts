@@ -2,64 +2,51 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import { ITopic } from './ITopic';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TopicServiceService {
-  constructor() {}
+  constructor(private localStorage: LocalStorageService) {}
+
+  private readonly key: string = 'topics';
 
   getTopics(): Observable<ITopic[]> {
-    const raw = localStorage.getItem('topics') ?? '[]';
-    const topics = <ITopic[]>JSON.parse(raw);
-    return of(topics);
+    return of(this.localStorage.getItemWithDefault<ITopic[]>(this.key, []));
   }
 
   getTopicById(id: string): Observable<ITopic | undefined> {
-    const raw = localStorage.getItem('topics') ?? '[]';
-    const topics = <ITopic[]>JSON.parse(raw);
-    const topic = topics.find((topic) => topic.id === id);
+    const topic = this.localStorage
+      .getItemWithDefault<ITopic[]>(this.key, [])
+      .find((topic) => topic.id === id);
     return of(topic);
   }
 
-  addTopic(topic: Omit<ITopic, 'id'>): Observable<ITopic> {
-    const raw = localStorage.getItem('topics') ?? '[]';
-    const topics = <ITopic[]>JSON.parse(raw);
-    const saved = { ...topic, id: uuid() };
-    topics.push(saved);
-
-    localStorage.setItem('topics', JSON.stringify(topics));
-
-    return of(saved);
+  addTopic(newTopic: Omit<ITopic, 'id'>): Observable<ITopic> {
+    const topic = { ...newTopic, id: uuid() };
+    this.localStorage.push(this.key, topic);
+    return of(topic);
   }
 
   removeTopic(id: string): void {
-    const raw = localStorage.getItem('topics') ?? '[]';
-    const topics = <ITopic[]>JSON.parse(raw);
-
-    const index = topics.findIndex((topic) => topic.id === id);
-    if (index !== -1) {
-      topics.splice(index, 1);
-    }
-
-    localStorage.setItem('topics', JSON.stringify(topics));
+    this.localStorage.removeAll<ITopic>(this.key, (topic) => topic.id === id);
   }
 
-  updateTopic(id: string, updated: Partial<ITopic>) {
-    const raw = localStorage.getItem('topics') ?? '[]';
-    let topics = <ITopic[]>JSON.parse(raw);
+  updateTopic(id: string, update: Partial<ITopic>): ITopic {
+    const topics = this.localStorage.getItemWithDefault<ITopic[]>(this.key, []);
+    const index = topics.findIndex((topic) => topic.id === id);
 
-    topics = topics.map((topic) => {
-      if (topic.id !== id) {
-        return topic;
-      }
+    if (index === -1) {
+      throw new Error(`Topic with (id=${id}) is not exists in localstorage`);
+    }
 
-      return {
-        ...topic,
-        ...updated,
-      };
-    });
+    topics[index] = {
+      ...topics[index],
+      ...update,
+    }
 
-    localStorage.setItem('topics', JSON.stringify(topics));
+    this.localStorage.setItem(this.key, topics);
+    return topics[index];
   }
 }
