@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { v4 as uuid } from 'uuid';
+import { IMaterial } from './IMaterial';
 import { ITopic } from './ITopic';
 import { LocalStorageService } from './local-storage.service';
+import { MaterialService } from './material.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TopicService {
-  constructor(private localStorage: LocalStorageService) {}
+  constructor(
+    private localStorage: LocalStorageService,
+    private materialService: MaterialService
+  ) {}
 
   private readonly key: string = 'topics';
 
@@ -23,6 +28,10 @@ export class TopicService {
     return of(topic);
   }
 
+  getMaterialsForTopic(id: string): Observable<IMaterial[]> {
+    return this.materialService.getMaterialsByTopicId(id);
+  }
+
   addTopic(newTopic: Omit<ITopic, 'id'>): Observable<ITopic> {
     const topic = { ...newTopic, id: uuid() };
     this.localStorage.push(this.key, topic);
@@ -33,7 +42,7 @@ export class TopicService {
     this.localStorage.removeAll<ITopic>(this.key, (topic) => topic.id === id);
   }
 
-  updateTopic(id: string, update: Partial<ITopic>): ITopic {
+  updateTopic(id: string, update: Partial<ITopic>): Observable<ITopic> {
     const topics = this.localStorage.getItemWithDefault<ITopic[]>(this.key, []);
     const index = topics.findIndex((topic) => topic.id === id);
 
@@ -44,9 +53,9 @@ export class TopicService {
     topics[index] = {
       ...topics[index],
       ...update,
-    }
+    };
 
     this.localStorage.setItem(this.key, topics);
-    return topics[index];
+    return of(topics[index]);
   }
 }
